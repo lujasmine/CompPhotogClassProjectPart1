@@ -1,2 +1,4 @@
 *.pdf
 resources/*
+own_data/*
+*.zip
