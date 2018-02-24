@@ -1,6 +1,6 @@
 % 3D Reconstruction
 
-% Load Cube Sequence
+% Load Sequence
 disp('Loading Sequence...');
 seq = load_sequence_color('resources/cube_T1', '00', 0, 39, 2, 'png');
 
@@ -8,16 +8,12 @@ seq = load_sequence_color('resources/cube_T1', '00', 0, 39, 2, 'png');
 for n = 1:size(seq,4)
     seq(:,:,n) = rgb2gray(seq(:,:,:,n));
 end
-disp('Done.');
 
 % Get (u,v) codes
-disp('Getting (u,v) codes');
-[u_code, v_code] = get_uv_codes(seq);
-disp('Done');
+disp('Getting (u,v) codes...');
+[u_code, v_code] = get_uv_codes(seq(:,:,5:));
 
 % Load calibration matrices
 synth_calib_matrices
-
-
 
 % Compute depth map
