@@ -1,0 +1,57 @@
+function pix_codes = get_pix_codes(seq)
+    
+    [rows,cols,n_imgs] = size(seq);
+    
+    img_index = 1;
+    diff = zeros(rows, cols, 10);
+    
+    % Calculate differences between each image and it's inverse
+    for k = 1 : n_imgs
+        diff(:,:,k) = seq(:,:,img_index) - seq(:,:,img_index + 1);
+        img_index = img_index + 2;
+    end
+    
+    % Threshold pixels into on/off
+    thresh = diff;
+    thresh(thresh >= 0) = 1;
+    thresh(thresh < 0) = 0;
+    
+    pix_codes = zeros(rows,cols);
+    
+    for i = 1 : rows
+        disp(i);
+        for j = 1 : cols
+            
+            sum_code = 0;
+            sum_code_v = 0;
+            
+            sum_diff_u = 0;
+            sum_diff_v = 0;
+            
+            for l = 1:10  
+                % comment here
+                sum_code_u = sum_code_u + (thresh(i,j,l) * 2^(l-1));
+                sum_code_v = sum_code_v + (thresh(i,j,l+10) * 2^(l-1));
+                
+                % Sum the differences between each image and it's inverse
+                sum_diff_u = sum_diff_u + diff(i,j,l);
+                sum_diff_v = sum_diff_v + diff(i,j,l+10);
+            end
+            
+            u_code(i,j) = sum_code_u;
+            v_code(i,j) = sum_code_v;
+            
+%             if (sum_diff_u < 0.02)
+%                 u_code(i,j) = -1;
+%             else
+%                 u_code(i,j) = sum_code_u;
+%             end
+%             
+%             if (sum_diff_v < 0.02)
+%                 v_code(i,j) = -1;
+%             else
+%                 v_code(i,j) = sum_code_v;
+%             end
+        end
+    end
+end
