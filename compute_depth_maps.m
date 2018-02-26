@@ -1,4 +1,4 @@
-function [u_depth, u_depth_2] = compute_depth_maps(u_code, v_code)
+function [u_depth, u_depth_2, point_cloud] = compute_depth_maps(u_code, v_code)
    
     [rows,cols] = size(u_code);
     u_depth = zeros(rows,cols,3);
@@ -14,6 +14,8 @@ function [u_depth, u_depth_2] = compute_depth_maps(u_code, v_code)
     K_proj = proj_int;
     R_proj = proj_ext(1:3,1:3);
     T_proj = proj_ext(1:3,4);
+    
+    point_cloud = zeros(rows*cols,3) ;
     
     % Generate extrinsics for alternate camera view
     cam_2_ext = cam_ext;
@@ -43,9 +45,12 @@ function [u_depth, u_depth_2] = compute_depth_maps(u_code, v_code)
                 % Least squares solution
                 w = A\b;
 
-                % Depth-map
-                u_depth(i,j,:) = cam_ext(1:3,1:4)*[w;1];
-                u_depth_2(i,j,:) = cam_2_ext(1:3,1:4)*[w;1];
+                % Unique depth for each pixel --> depth map
+                u_depth(i,j,:) = cam_ext*[w;1];
+                u_depth_2(i,j,:) = cam_2_ext*[w;1];
+                
+                % Point Cloud
+                point_cloud(((i - 1) * cols + j),:) = w;
             end
         end
     end

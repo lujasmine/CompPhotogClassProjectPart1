@@ -37,13 +37,15 @@ filename = strcat(path,slash,prefix,number,'.',suffix);
 
 % Load image and convert it to gray level
 current = imread(filename);
+current = im2double(current);
+current = imresize(current,0.5);
 
 % Print filename
 % sprintf('file=%s\n',filename)
 
 % Create output matrix
-output = uint8(zeros(size(current,1), size(current,2), last-first+1));
-output(:,:,1) = current;
+output = zeros(size(current,1), size(current,2), size(current,3), last-first+1);
+output(:,:,:,1) = current;
 
 for i=2:last-first+1
     
@@ -55,9 +57,11 @@ for i=2:last-first+1
     
     % Load image and convert it to gray level
     current = imread(filename);
+    current = im2double(current);
+    current = imresize(current,0.5);
     
     % Update output matrix
-    output(:,:,i) = current;
+    output(:,:,:,i) = current;
     
     % Print filename
 	% sprintf('file=%s\n',filename)

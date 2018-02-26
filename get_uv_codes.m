@@ -19,10 +19,11 @@ function [u_code, v_code] = get_uv_codes(seq)
 
     u_code = zeros(rows,cols);
     v_code = zeros(rows,cols);
-%     threshold = 32/255;
+    threshold = 0.05;
     
     disp(' - Computing (u,v) codes')
     for i = 1 : rows
+        disp(i);
         for j = 1 : cols
             
             sum_code_u = 0;
@@ -36,19 +37,17 @@ function [u_code, v_code] = get_uv_codes(seq)
             end
             
             % Eliminate unreliable pixels
-%             if (abs(sum(diff(i,j))) < threshold)
-%                 u_code(i,j) = 0;
-%             else
+            if (abs(sum(diff(i,j))) < threshold)
+                u_code(i,j) = 0;
+            else
                 u_code(i,j) = sum_code_u;
-%             end
+            end
             
-%             if (abs(sum(diff(i,j))) < threshold)
-%                 v_code(i,j) = 0;
-%             else
+            if (abs(sum(diff(i,j))) < threshold)
+                v_code(i,j) = 0;
+            else
                 v_code(i,j) = sum_code_v;
-%             end
+            end
         end
     end
-    u_code = mat2gray(u_code);
-    v_code = mat2gray(v_code);
 end
