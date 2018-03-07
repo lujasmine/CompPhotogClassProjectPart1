@@ -1,42 +1,24 @@
-function [u_depth, u_depth_2, point_cloud] = compute_depth_maps(u_code, v_code)
+function u_depth = compute_depth_map(u_code, v_code)
    
     [rows,cols] = size(u_code);
     u_depth = zeros(rows,cols,3);
-    u_depth_2 = zeros(rows,cols,3);
     
     % Load calibration matrices
     synth_calib_matrices()
     
-    K_cam = cam_int;
-    R_cam = cam_ext(1:3,1:3);
-    T_cam = cam_ext(1:3,4);
-    
-    K_proj = proj_int;
-    R_proj = proj_ext(1:3,1:3);
-    T_proj = proj_ext(1:3,4);
-    
-    point_cloud = zeros(rows*cols,3) ;
-    
-    % Generate extrinsics for alternate camera view
-    cam_2_ext = cam_ext;
-    rot = [cosd(40), -sind(40), 0;
-        sind(40), cosd(40), 0 ;
-        0 , 0, 1,] ;
-    R_cam_2 = cam_ext(1:3,1:3)*rot;
-    cam_2_ext(1:3,1:3) = R_cam_2;
-    
     for i = 1 : rows
+        disp(i);
         for j = 1 : cols
             if (u_code(i,j,1) ~= 1023)
                 % Convert pixels to normalized camera/projector coordinates
-                p_cam = K_cam\[j;i;1];
-                p_proj = K_proj\[v_code(i,j); u_code(i,j);1];
+                x_cam = cam_int\[j;i;1];
+                x_proj = proj_int\[v_code(i,j); u_code(i,j);1];
 
                 % Compute linear constraints for the camera
-                [a11, a21, b1] = compute_lin_constr(R_cam, T_cam,p_cam);
+                [a11, a21, b1] = compute_lin_constr(cam_ext(1:3,1:3), cam_ext(1:3,4),x_cam);
 
                 % Compute linear constraints for the projector
-                [a12, a22, b2] = compute_lin_constr(R_proj, T_proj,p_proj);
+                [a12, a22, b2] = compute_lin_constr(proj_ext(1:3,1:3), proj_ext(1:3,4),x_proj);
 
                 % Stack linear constraints
                 A = [a11;a21;a12;a22];
@@ -47,10 +29,6 @@ function [u_depth, u_depth_2, point_cloud] = compute_depth_maps(u_code, v_code)
 
                 % Unique depth for each pixel --> depth map
                 u_depth(i,j,:) = cam_ext*[w;1];
-                u_depth_2(i,j,:) = cam_2_ext*[w;1];
-                
-                % Point Cloud
-                point_cloud(((i - 1) * cols + j),:) = w;
             end
         end
     end

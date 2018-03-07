@@ -19,7 +19,7 @@ function [u_code, v_code] = get_uv_codes(seq)
 
     u_code = zeros(rows,cols);
     v_code = zeros(rows,cols);
-    threshold = 0.05;
+    threshold = 0.01;
     
     disp(' - Computing (u,v) codes')
     for i = 1 : rows
@@ -30,24 +30,23 @@ function [u_code, v_code] = get_uv_codes(seq)
             sum_code_v = 0;
             
             for l = 1:10   
-                % Convert gray code to binary get a unique label
+                % Convert gray code to decimal get a unique label
                 sum_code_u = sum_code_u + (bin_label(i,j,l) * 2^(l-1));
                 sum_code_v = sum_code_v + (bin_label(i,j,l+10) * 2^(l-1));
 
             end
             
-            % Eliminate unreliable pixels
-            if (abs(sum(diff(i,j))) < threshold)
-                u_code(i,j) = 0;
-            else
-                u_code(i,j) = sum_code_u;
-            end
+            u_code(i,j) = sum_code_u;
+            v_code(i,j) = sum_code_v;
             
-            if (abs(sum(diff(i,j))) < threshold)
-                v_code(i,j) = 0;
-            else
-                v_code(i,j) = sum_code_v;
-            end
+            % Eliminate unreliable pixels
+%             if (abs(sum(diff(i,j,:))) >= threshold)
+%                 u_code(i,j) = sum_code_u;
+%             end
+            
+%             if (abs(sum(diff(i,j,:))) >= threshold)
+%                 v_code(i,j) = 0;
+%             end
         end
     end
 end
