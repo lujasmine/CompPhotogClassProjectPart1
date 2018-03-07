@@ -16,10 +16,7 @@ disp('Getting (u,v) codes...');
 
 % Determine unique depth for each pixel and compute depth-maps
 disp('Computing depth map...');
-depth = compute_depth_map(u_code, v_code);
-
-imshow(depth);
+[depth, point_cloud] = compute_depth_map(u_code, v_code);
 
 % Visualise point cloud
-
 % scatter3(point_cloud(:,1),point_cloud(:,2),point_cloud(:,3),'.');

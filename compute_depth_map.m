@@ -1,10 +1,13 @@
-function u_depth = compute_depth_map(u_code, v_code)
+function [u_depth, point_cloud] = compute_depth_map(u_code, v_code)
    
     [rows,cols] = size(u_code);
     u_depth = zeros(rows,cols,3);
     
     % Load calibration matrices
     synth_calib_matrices()
+    
+    index = 1;
+    point_cloud = zeros(rows * cols, 3);
     
     for i = 1 : rows
         disp(i);
@@ -29,6 +32,10 @@ function u_depth = compute_depth_map(u_code, v_code)
 
                 % Unique depth for each pixel --> depth map
                 u_depth(i,j,:) = cam_ext*[w;1];
+                
+                % Add 3D point to point cloud
+                point_cloud(index,:) = w;
+                index = index + 1;
             end
         end
     end
