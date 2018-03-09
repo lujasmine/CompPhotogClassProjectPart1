@@ -2,3 +2,8 @@
 resources/*
 own_data/*
 *.zip
+*.m~
+*.jpg
+*.mat
+*.py
+*.DS_Store
