@@ -1,5 +1,5 @@
 % Load calibration images
-calib_imgs = load_sequence_color('resources/calibration', '00', 0, 5, 2, 'png');
+calib_imgs = load_sequence_color('synthetic_data/calibration/', '00', 0, 5, 2, 'png');
 
 % Convert to grayscale
 for n = 1:size(calib_imgs,4)
@@ -17,6 +17,7 @@ print_corners = [cheq_pos(1), cheq_pos(2);
                 cheq_pos(1), cheq_pos(2)+cheq_width];
 
 % Loop through pairs of images
+img_pair = 1;
 for i = 1:2:5
     % Calculate camera -> projector homography
     H = calc_homog(calib_imgs(:,:,i), print_corners);
@@ -24,9 +25,11 @@ for i = 1:2:5
     % Apply transformation to printed image to get virtual calibration pattern
     virtual_img = imwarp(calib_imgs(:,:,i+1), H);
     
-    % Save virtual pattern
-    filename = sprintf('virtual_%i.jpg', i);
+    % Save virtual calibration pattern
+    filename = sprintf('synthetic_data/virtual_%i.jpg', img_pair);
     imwrite(virtual_img, filename);
+    
+    img_pair = img_pair + 1;
 end
 
 

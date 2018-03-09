@@ -7,3 +7,6 @@ own_data/*
 *.mat
 *.py
 *.DS_Store
+*.png
+TOOLBOX_calib/*
+*Calib_Results.m
