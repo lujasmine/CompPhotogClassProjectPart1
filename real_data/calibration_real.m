@@ -1,5 +1,5 @@
 % Load calibration images
-calib_imgs = load_sequence_color('synthetic_data/calibration/', '00', 0, 5, 2, 'png');
+calib_imgs = load_sequence_color('real_data/real_calibration/', 'IMG_93', 21, 29, 2, 'JPG');
 
 % Convert to grayscale
 for n = 1:size(calib_imgs,4)
@@ -7,8 +7,8 @@ for n = 1:size(calib_imgs,4)
 end
 
 % Chequerboard position and width and projector resolution
-cheq_pos = [378,277];
-cheq_width = 270;
+cheq_pos = [518,120];
+cheq_width = 299;
 proj_res = [768 1024];
 
 % Projector size
@@ -21,19 +21,16 @@ print_corners = [cheq_pos(1), cheq_pos(2);
                 cheq_pos(1), cheq_pos(2)+cheq_width];
 
 % Loop through pairs of images
-img_pair = 1;
-for i = 1:2:5
+for i = 1:size(calib_imgs,4)
     % Calculate camera -> projector homography
     H = calc_homog(calib_imgs(:,:,i), print_corners);
     
     % Apply transformation to printed image to get virtual calibration pattern
-    virtual_img = imwarp(calib_imgs(:,:,i+1), H, 'OutputView', imref2d(proj_res));
+    virtual_img = imwarp(calib_imgs(:,:,i), H, 'OutputView', imref2d(proj_res));
     
     % Save virtual calibration pattern
-    filename = sprintf('synthetic_data/virtual_%i.jpg', img_pair);
+    filename = sprintf('real_data/virtual_%i.jpg', i);
     imwrite(virtual_img, filename);
-    
-    img_pair = img_pair + 1;
 end
 
 

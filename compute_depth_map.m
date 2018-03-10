@@ -1,10 +1,26 @@
-function [u_depth, point_cloud] = compute_depth_map(u_code, v_code)
+% options:
+% 1 = synthetic data with given matrices
+% 2 = synthetic data with own calibration
+% 3 = real data
+% 4 = own data
+
+function [u_depth, point_cloud] = compute_depth_map(u_code, v_code, option)
    
     [rows,cols] = size(u_code);
     u_depth = zeros(rows,cols,3);
     
     % Load calibration matrices
-    synth_calib_matrices()
+    if (option == 1)
+        synth_calib_matrices();
+    elseif (option == 2)
+        synth_calib_matrices_2();
+    elseif (option == 3)
+        real_calib_matrices();
+    elseif (option == 4)
+        synth_calib_matrices_own();
+    else
+        err('Option number error. Please try again!');
+    end
     
     index = 1;
     point_cloud = zeros(rows * cols, 3);
