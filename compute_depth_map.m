@@ -17,7 +17,7 @@ function [u_depth, point_cloud] = compute_depth_map(u_code, v_code, option)
     elseif (option == 3)
         real_calib_matrices();
     elseif (option == 4)
-        synth_calib_matrices_own();
+        own_calib_matrices();
     else
         err('Option number error. Please try again!');
     end

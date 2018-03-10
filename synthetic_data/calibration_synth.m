@@ -1,18 +1,10 @@
 % Load calibration images
-calib_imgs = load_sequence_color('synthetic_data/calibration/', '00', 0, 5, 2, 'png');
-
-% Convert to grayscale
-for n = 1:size(calib_imgs,4)
-    calib_imgs(:,:,n) = rgb2gray(im2double(calib_imgs(:,:,:,n)));
-end
+calib_imgs = load_sequence_color('synthetic_data/calibration/', '00', 0, 5, 2, 'png',0);
 
 % Chequerboard position and width and projector resolution
 cheq_pos = [378,277];
 cheq_width = 270;
 proj_res = [768 1024];
-
-% Projector size
-
 
 % Calculate corner positions of printed images (clockwise corners)
 print_corners = [cheq_pos(1), cheq_pos(2);

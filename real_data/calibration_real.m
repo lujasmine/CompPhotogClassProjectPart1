@@ -1,18 +1,10 @@
 % Load calibration images
-calib_imgs = load_sequence_color('real_data/real_calibration/', 'IMG_93', 21, 29, 2, 'JPG');
-
-% Convert to grayscale
-for n = 1:size(calib_imgs,4)
-    calib_imgs(:,:,n) = rgb2gray(im2double(calib_imgs(:,:,:,n)));
-end
+calib_imgs = load_sequence_color('real_data/real_calibration/', 'IMG_93', 21, 29, 2, 'JPG',1);
 
 % Chequerboard position and width and projector resolution
 cheq_pos = [518,120];
 cheq_width = 299;
 proj_res = [768 1024];
-
-% Projector size
-
 
 % Calculate corner positions of printed images (clockwise corners)
 print_corners = [cheq_pos(1), cheq_pos(2);
@@ -21,7 +13,7 @@ print_corners = [cheq_pos(1), cheq_pos(2);
                 cheq_pos(1), cheq_pos(2)+cheq_width];
 
 % Loop through pairs of images
-for i = 1:size(calib_imgs,4)
+for i = 1:size(calib_imgs,3)
     % Calculate camera -> projector homography
     H = calc_homog(calib_imgs(:,:,i), print_corners);
     
