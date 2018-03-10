@@ -1,4 +1,6 @@
-function output = load_sequence_color(path,prefix, first, last, digits, suffix)
+
+% option to resize 
+function output = load_sequence_color(path,prefix, first, last, digits, suffix, resize)
 
 %
 % Read a sequence of images, convert them in gray level and returns the
@@ -36,14 +38,18 @@ end
 filename = strcat(path,slash,prefix,number,'.',suffix);
 
 % Load image and convert it to gray level
-current = im2double(imread(filename));
+if (resize)
+    current = imresize(im2double(imread(filename)),0.5);
+else
+    current = im2double(imread(filename));
+end
 
 % Print filename
 % sprintf('file=%s\n',filename)
 
 % Create output matrix
-output = zeros(size(current,1), size(current,2), 3, last-first+1);
-output(:,:,:,1) = current;
+output = zeros(size(current,1), size(current,2), last-first+1);
+output(:,:,1) = rgb2gray(im2double(current));
 
 for i=2:last-first+1
 
@@ -54,10 +60,14 @@ for i=2:last-first+1
     filename = strcat(path,slash,prefix,number,'.',suffix);
 
     % Load image and convert it to gray level
-    current = im2double(imread(filename));
+    if (resize)
+        current = imresize(im2double(imread(filename)),0.5);
+    else
+        current = im2double(imread(filename));
+    end
 
     % Update output matrix
-    output(:,:,:,i) = current;
+    output(:,:,i) = rgb2gray(im2double(current));
 
     % Print filename
 	% sprintf('file=%s\n',filename)
