@@ -1,5 +1,5 @@
 % Load calibration images
-calib_imgs = load_sequence_color('real_data/real_calibration/', 'IMG_93', 21, 29, 2, 'JPG',1);
+calib_imgs = load_sequence_color('real_data/real_calibration/', 'IMG_93', 21, 29, 2, 'JPG',0);
 
 % Chequerboard position and width and projector resolution
 cheq_pos = [518,120];

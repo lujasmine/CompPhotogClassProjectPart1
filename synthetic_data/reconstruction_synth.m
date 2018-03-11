@@ -2,7 +2,7 @@
 
 % Load Sequence
 disp('Loading Sequence...');
-seq = load_sequence_color('resources/tablet_T1', '00', 0, 39, 2, 'png', 0);
+seq = load_sequence_color('resources/notebook_T1', '00', 0, 39, 2, 'png', 0);
 
 % Get (u,v) codes
 disp('Getting (u,v) codes...');
@@ -15,6 +15,12 @@ disp('Computing depth map...');
 % Using own calibration
 [depth_2, point_cloud_2] = compute_depth_map(u_code, v_code, 2);
 
-% Visualise point cloud
+% % Visualise point cloud
 % scatter3(point_cloud(:,1),point_cloud(:,2),point_cloud(:,3),'.');
 % pcshow(point_cloud);
+
+% Overlay the two point clouds
+% scatter3(point_cloud(:,1),point_cloud(:,2),point_cloud(:,3), 'r.'); 
+% hold on;
+% scatter3(point_cloud_2(:,1),point_cloud_2(:,2),point_cloud_2(:,3), 'b.');
+% hold off;

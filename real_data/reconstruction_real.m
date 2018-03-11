@@ -2,8 +2,8 @@
 
 % Load Sequence
 disp('Loading Sequence...');
-% seq = load_sequence_color('resources/real_crayon_dalek', 'IMG_94', 18, 57, 2, 'JPG', 1);
-seq = load_sequence_color('resources/real_tea', 'IMG_', 9377, 9416, 4, 'JPG', 1);
+seq = load_sequence_color('resources/real_crayon_dalek', 'IMG_94', 18, 57, 2, 'JPG', 1);
+% seq = load_sequence_color('resources/real_tea', 'IMG_', 9377, 9416, 4, 'JPG', 1);
 
 % Get (u,v) codes
 disp('Getting (u,v) codes...');
